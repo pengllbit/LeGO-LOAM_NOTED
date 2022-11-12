@@ -272,6 +272,8 @@ public:
     }
 
 
+
+    //地面点的提取，可以结合激光雷达安装高度等先验消息进行改进。
     void groundRemoval(){
         size_t lowerInd, upperInd;
         float diffX, diffY, diffZ, angle;
@@ -329,6 +331,8 @@ public:
         }
     }
 
+
+    //基于广度优先遍历bfs（labelComponents）  的聚类和外点剔除
     void cloudSegmentation(){
         for (size_t i = 0; i < N_SCAN; ++i)
             for (size_t j = 0; j < Horizon_SCAN; ++j)
@@ -396,7 +400,10 @@ public:
         }
     }
 
+    //广度优先遍历 
     void labelComponents(int row, int col){
+        // 广度优先遍历一般用 queue 队列
+        // queue会 slow down  所以使用双指针和数组
         float d1, d2, alpha, angle;
         int fromIndX, fromIndY, thisIndX, thisIndY; 
         bool lineCountFlag[N_SCAN] = {false};
@@ -404,6 +411,7 @@ public:
         queueIndX[0] = row;
         queueIndY[0] = col;
         int queueSize = 1;
+        
         int queueStartInd = 0;
         int queueEndInd = 1;
 
